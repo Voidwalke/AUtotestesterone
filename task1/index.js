@@ -1,9 +1,14 @@
 const assert = require('assert');
 const { Builder, Browser, By, Key, until } = require('selenium-webdriver');
 
+// Создаем экземпляр драйвера для браузера Chrome
 const driver = new Builder().forBrowser(Browser.CHROME).build();
+
+// Инициализируем переменные для общего количества задач и оставшихся задач
 let total = 5, remaining = 5;
 
+
+// Функция для выполнения теста
 const test = async () => {
     try {
         await driver.get('https://lambdatest.github.io/sample-todo-app/');
@@ -17,7 +22,8 @@ const test = async () => {
             return await remainingElement.getText();
         };
         assert.strictEqual(await getRemainingText(), '5 of 5 remaining');
-
+ 
+        // Функция для тестирования отдельной задачи
         const testItem = async (num) => {
             const item = await driver.findElement(By.xpath(`//ul[@class="list-unstyled"]/li[${num}]`));
             const spanElement = await item.findElement(By.tagName('span'));
@@ -34,7 +40,7 @@ const test = async () => {
         for (let i = 1; i <= 5; i++) {
             await testItem(i);
         }
-
+ // Функция для добавления новой задачи
         const addItem = async (text) => {
             const input = await driver.findElement(By.id('sampletodotext'));
             const btn = await driver.findElement(By.id('addbutton'));
